@@ -1,0 +1,216 @@
+/* principal */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-color: black;
+    color: white;
+}
+
+/* Imagen de fondo borrosa en toda la pantalla */
+body::before {
+    content: "";
+    position: fixed; /* Se queda fijo aunque hagas scroll */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("/static/img/fondo.png") no-repeat center center fixed;
+    background-size: cover;
+    filter: blur(25px); /* Nivel de blur */
+    z-index: -1; /* Lo manda al fondo */
+}
+main {
+    flex: 1; /* Ocupa el espacio restante entre el header y el footer */
+}
+
+a.a-normal {
+    color: rgb(255 255 255);
+    text-decoration: none;
+    text-shadow: 1px 2px 10px #ffffff;
+    font-weight:bold;
+}
+
+a.a-blue {
+    color: rgb(0 59 255);
+    text-decoration: underline;
+    text-shadow: 1px 2px 10px #1451bf;
+}
+
+/* botones  */
+.btn-primary {
+    border: 2px solid #2c00ff;
+    background-image: linear-gradient(45deg, #00b5ff, #2c00ff);
+}
+.btn-primary:hover {
+    border: 3px solid #00b5ff;
+    background-image: linear-gradient(45deg, #2c00ff, #00b5ff);
+}
+.btn-primary:active {
+    background: #2c00ff;
+}
+
+.btn-danger {
+    border: 1px solid #ff0000;
+    background-image: linear-gradient(45deg, #ff00d9, #ff0000);
+}
+.btn-danger:hover {
+    border: 3px solid #ff00d9;
+    background-image: linear-gradient(45deg, #ff0000, #ff00d9);
+}
+.btn-danger:active {
+    background: #ff0000;
+}
+
+.btn-success {
+    border: 1px solid #00a362;
+    background-image: linear-gradient(45deg, #00ff8c, #00a362);
+}
+.btn-success:hover {
+    border: 3px solid #00ff8c;
+    background-image: linear-gradient(45deg, #00a362, #00ff8c);
+}
+.btn-success:active {
+    background: #00ff8c;
+}
+
+.btn-purple {
+    border: 1px solid #ff00ff84;
+    background-image: linear-gradient(45deg, #ff00fb, #ff00ff84);
+}
+.btn-purple:hover {
+    border: 3px solid #ff00fb;
+    background-image: linear-gradient(45deg, #ff00ff84, #ff00fb);
+}
+.btn-purple:active {
+    background: #ff00fb;
+}
+
+.btn-warning {
+    border: 1px solid #f0ff00;
+    background-image: linear-gradient(45deg, #ffb300, #f0ff00);
+}
+.btn-warning:hover {
+    border: 3px solid #ffb300;
+    background-image: linear-gradient(45deg, #f0ff00, #ffb300);
+}
+.btn-warning:active {
+    background: #ffb300;
+}
+
+.dropdown-divider, .dropdown-divider-white {
+    height: 0;
+    margin: 2px 5px 10px 5px;
+    overflow: hidden;
+    border-top: 1px solid #8d8d8d;
+    opacity: 1;
+}
+.dropdown-divider {
+    border-top: 1px solid #1f1f1f;
+}
+
+.nav-link.active {
+    background: #474747;
+    border-radius: 7px;
+    padding: 5px 15px;
+}
+.nav-link:hover {
+    background: #474747;
+    border-radius: 7px;
+    padding: 5px 15px;
+}
+
+/* tablas */
+.table {
+    --bs-table-hover-color: #000000;
+    --bs-table-hover-bg: #4e92f76b;
+}
+table > thead > tr > th,
+table > thead > tr > th > a {    
+    font-size: 12px !important; 
+    align-content: center;
+    text-align: center;
+}
+
+table > tbody > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td > button,
+table > tbody > tr > th > button,
+table > tbody > tr > td > a,
+table > tbody > tr > th > a {
+    font-size: 12px !important; 
+    align-content: center;
+    text-align: center;
+}
+
+table > tbody > tr > td,
+table > tbody > tr > th{
+    padding: 2px !important;
+}
+.fa-telegram {
+    font-size: 17px !important;
+}
+.text-a-index {
+    font-size: 13px !important;
+    font-weight: bold !important;
+    text-decoration: none !important;
+}
+/* botones  */
+.btn-sm-sm{
+    padding: 0px 2px !important;
+}
+
+/* paginacion */
+.page-link {
+    padding: 2px 3px;
+    color: #1f1f1f;
+}
+.pagination {
+    --bs-pagination-active-color: #fff;
+    --bs-pagination-active-bg: #000000;
+    --bs-pagination-active-border-color: #000000;
+    --bs-pagination-hover-color: #ffffff;
+    --bs-pagination-hover-bg: #000000;
+    --bs-pagination-hover-border-color: #000000;
+    --bs-pagination-focus-color: #000000;
+}
+
+/* alertas */
+.alert{
+    padding: 0px;
+    font-size: 10px;
+    text-align: center;
+    margin: 0;
+}
+.text-normal{
+    font-size: 13px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+/* celdas  */
+.cel-100{
+    min-width: 100px;
+}
+.cel-110{
+    min-width: 110px;
+}
+.cel-120{
+    min-width: 120px;
+}
+.cel-150{
+    min-width: 150px;
+}
+
+/*  Formularios  */
+.errorlist {
+    color: red;
+    font-size: 13px;
+    list-style-type: none;
+}

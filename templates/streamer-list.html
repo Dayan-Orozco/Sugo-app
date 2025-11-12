@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+
+{% block title %}Listado Streamers{% endblock %}
+
+{% block content %}
+<div class="card shadow p-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="mb-0">Streamers Registrados</h1>
+        <a  href="{% url 'streamer_register'%}" class="btn btn-primary btn-sm"><i class="fa-solid fa-user-plus"></i> Registrar Nueva Streamer</a>
+        <a  href="{% url 'streamer_upload_excel'%}" class="btn btn-success btn-sm"><i class="fa-solid fa-file-excel"></i> Cargar Excel</a>
+    </div>
+    <div class="row justify-content-between my-3">
+        <div class="col-md-6 mb-1">
+            <form method="get" class="align-content-center row p-0">
+                <div class="col-md-6 pb-1">
+                    <form method="get" class="align-content-center">
+                        <div class="input-group">
+                            <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Buscar por ID, Apodo o Nombre">
+                            <button type="submit" class="btn btn-primary btn-sm">Buscar</button>
+                        </div>
+                    {% if query %}
+                    <a href="{% url 'streamer_list' %}" class="btn btn-outline-secondary btn-sm">X</a>
+                    {% endif %}
+                </div>            
+                <div class="col-md-6 pb-1">
+                    <div class="align-content-center d-flex">                  
+                        <input type="date" name="start_date" value="{{ start_date }}" class="form-control">
+                        <input type="date" name="end_date" value="{{ end_date }}" class="form-control">
+                    </div>
+                </div>
+            </form>            
+        </div>
+        <div class="col-md-6 mb-1 align-content-center">
+            <div class="d-flex justify-content-between">
+                <div class="align-content-center">Pendientes: <strong>{{pending}}</strong></div>
+                <div class="align-content-center">Total: <strong>{{ total }}</strong></div>
+                <div class="align-content-center">
+                    <ul class="pagination m-0">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?q={{ query }}&page=1">&laquo;</a></li>
+                        <li class="page-item"><a class="page-link" href="?q={{ query }}&page={{ page_obj.previous_page_number }}">Anterior</a></li>
+                    {% endif %}
+                    <li class="page-item active">
+                        <span class="page-link">
+                        Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+                        </span>
+                    </li>
+                    {% if page_obj.has_next %}
+                        <li class="page-item"><a class="page-link" href="?q={{ query }}&page={{ page_obj.next_page_number }}">Siguiente</a></li>
+                        <li class="page-item"><a class="page-link" href="?q={{ query }}&page={{ page_obj.paginator.num_pages }}">&raquo;</a></li>
+                    {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="my-3">
+        <table class="table table-bordered table-hover table-striped">
+            <thead class="table-dark">
+                <tr>
+                    {% for col, label in columns %}
+                    <th class="text-nowrap">
+                        <a class="text-decoration-none text-light" href="?q={{ query }}&order_by={{ col }}&direction={% if order_by == col and direction == 'asc' %}desc{% else %}asc{% endif %}">
+                            {{ label }}
+                        </a>
+                        {% if order_by == col %}
+                            <span class="ms-1">
+                                {% if direction == 'asc' %}
+                                    ▲
+                                {% else %}
+                                    ▼
+                                {% endif %}
+                            </span>
+                        {% endif %}
+                    </th>
+                    {% endfor %}
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for streamer in page_obj %}
+                <tr>
+                    <td>{{ streamer.id }}</td>
+                    <td>{{ streamer.name }}</td>
+                    <td>{{ streamer.real_name }}</td>
+                    <td>
+                        {% if streamer.join_date %}
+                            {{ streamer.join_date|date:"Y-m-d H:i" }}                    
+                        {% else %}                                                    
+                            <!-- Formulario oculto -->
+                            <form id="setJoinDateForm" method="post" action="{% url 'streamer_set_join_date' streamer.id %}" style="display:none;">
+                                {% csrf_token %}
+                                <input type="hidden" name="fecha" id="joinDateHidden">
+                            </form>
+                            <button class="btn btn-danger btn-sm btn-sm-sm" onclick="setJoinDate({{ streamer.id }})">Sin Agencia</button>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if streamer.join_date %}
+                            {{ streamer.join_date|timesince}}  
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if streamer.get_status_display == "Activa" %}
+                            <div class="alert alert-success" style="background-color: teal; color: white;" role="alert">
+                                {{ streamer.get_status_display }}
+                            </div>
+                        {% elif streamer.get_status_display == "Nueva" or streamer.get_status_display == "Novata" %}
+                            <div class="alert alert-secondary" role="alert">
+                                {{ streamer.get_status_display }}
+                            </div>
+                        {% elif streamer.get_status_display == "Inactiva" %}
+                            <div class="alert alert-dark" role="alert">
+                                {{ streamer.get_status_display }}
+                            </div>
+                        {% elif streamer.get_status_display == "Intermedia" %}
+                            <div class="alert alert-info" role="alert">
+                                {{ streamer.get_status_display }}
+                            </div>
+                        {% elif streamer.get_status_display == "Modo Descanso" %}
+                            <div class="alert alert-dark" role="alert">
+                                {{ streamer.get_status_display }}
+                            </div>
+                        {% elif streamer.get_status_display == "7 días sin generar" %}
+                            <div class="alert alert-warning" role="alert">
+                                {{ streamer.get_status_display }}
+                            </div>
+                        {% elif streamer.get_status_display == "15 días sin generar" %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ streamer.get_status_display }}
+                            </div>
+                        {% elif streamer.get_status_display == "30 días sin generar" %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ streamer.get_status_display }}
+                            </div>
+                        {% elif streamer.get_status_display == "Esperando aprobación" %}
+                            <div class="alert alert-warning" role="alert">
+                                {{ streamer.get_status_display }}
+                            </div>
+                        {% elif streamer.get_status_display == "Botón Mi Agencia" %}
+                            <div class="alert alert-warning" role="alert">
+                                {{ streamer.get_status_display }}
+                            </div>
+                        {% elif streamer.get_status_display == "Duplicado" %}
+                            <div class="alert alert-warning" role="alert">
+                                {{ streamer.get_status_display }}
+                            </div>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if streamer.telegram_number %}
+                            <a href="https://t.me/+{{streamer.telegram_number}}" target="_blank"><i class="fa-brands fa-telegram"></i></a>
+                        {% else %}
+                            No Tiene
+                        {% endif %}
+                    </td>
+                    <td>{{ streamer.get_country_display }}</td>
+                    <td>
+                        <button class="btn btn-purple btn-sm btn-sm-sm">
+                            <i class="fa-solid fa-star text-white"></i> 
+                            {{ streamer.charm_level }}
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-warning btn-sm btn-sm-sm">
+                            <i class="fa-solid fa-crown text-white"></i> 
+                            {{ streamer.vip_level }}
+                        </button>
+                    </td>                    
+                    <td>
+                        {% if streamer.is_capacite %}
+                            {{ streamer.date_capacite|date:"Y-m-d H:i" }}                       
+                        {% else %}
+                            <button type="button" onclick="confirmCapacitar({{ streamer.id }})" class="btn btn-danger btn-sm btn-sm-sm">Capacitar</button>
+                        {% endif %}
+                    </td>
+                    <td>{% if streamer.reuse_acount %}
+                            {{ streamer.reuse_acount }}
+                        {% else %}
+                        No
+                        {% endif %}
+                    </td>
+                    <td class="cel-100">
+                        <a href="{% url 'streamer_edit' streamer.id %}" class="btn btn-warning btn-sm btn-sm-sm"><i class="fa-solid fa-user-pen"></i></a>
+                        <button type="button" class="btn btn-danger btn-sm btn-sm-sm" onclick="deleteStreamer({{ streamer.id }})"><i class="fa-solid fa-user-minus"></i></button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No hay streamers registrados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    
+    </div>
+</div>
+
+{% endblock %}

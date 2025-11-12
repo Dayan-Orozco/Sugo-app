@@ -1,0 +1,115 @@
+{% load static %} 
+<header>
+    <nav class="navbar bg-dark" data-bs-theme="dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'ico/favicon.ico' %}" width="50px" class="px-2" style="border-radius: 50%;"/>THE CRAZY AGENCY</a>
+            {% if user.is_authenticated %}
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <!-- profile -->
+                    {% if request.user.avatar %}
+                        <img src="{{ request.user.avatar.url }}" width="60px" height="60px" style="border-radius: 50%;"/>
+                    {% else %}
+                        <img src="{% static 'img/foto-perfil.jpg' %}" width="60px" height="60px" style="border-radius: 50%;"/>
+                    {% endif %}
+                    <div class="px-3">
+                        <h6 class="offcanvas-title" id="offcanvasNavbarLabel">{{ request.user|upper }}</h6>
+                        <small class="text-muted">
+                            {% if request.user.groups.exists %}
+                                {{ request.user.groups.first.name }}
+                            {% else %}
+                                Sin grupo
+                            {% endif %}
+                        </small>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <!-- Sidebar -->
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">Inicio</a>
+                        </li>                               
+                        <li><h6 class="dropdown-header pt-2">Plataformas disponibles</h6></li>
+                        <hr class="dropdown-divider-white">
+                        {% for p in plataformas %}
+                        <li class="nav-item">                            
+                            {% if p.estado == "asociada" %}
+                            <a class="nav-link" href="{% url p.url %}">Gestionar {{p.nombre|capfirst}} - {{p.url}}</a>
+                            {% else %}
+                            <a class="nav-link" href="{% url p.url %}">Asociar {{p.nombre|capfirst}} - {{p.url}}</a>
+                            {% endif %}
+                        </li>                        
+                        {% endfor %}
+                        <br>                            
+                        {% if request.user.groups.first.name == 'Jefe' %}  
+                        <li><h6 class="dropdown-header pt-2">Gestion Usuarias
+                        </h6></li>
+                                <hr class="dropdown-divider-white">
+                                <li class="nav-item">
+                                    <a class="nav-link {% if request.resolver_match.url_name == 'user_list' %}active{% endif %}" href="{% url 'user_list' %}">Listado</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {% if request.resolver_match.url_name == 'streamer_register' %}active{% endif %}" href="{% url 'streamer_register' %}">Registrar Nueva Chica</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {% if request.resolver_match.url_name == 'streamer_upload_excel' %}active{% endif %}" href="{% url 'streamer_upload_excel' %}">Cagar Excel</a>
+                                </li>
+                        
+                        {% endif %}
+                        <hr class="dropdown-divider-white">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Cerrar sesión</a>
+                        </li>
+
+
+                        
+                        <li><h6 class="dropdown-header pt-2">Gestión de Streamers</h6></li>
+                        <hr class="dropdown-divider-white">
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'streamer_list' %}active{% endif %}" href="{% url 'streamer_list' %}">Listado</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'streamer_register' %}active{% endif %}" href="{% url 'streamer_register' %}">Registrar Nueva Chica</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'streamer_upload_excel' %}active{% endif %}" href="{% url 'streamer_upload_excel' %}">Cagar Excel</a>
+                        </li>
+                
+                        <li><h6 class="dropdown-header pt-2">Registros</h6></li>
+                        <hr class="dropdown-divider-white">
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'daily_list' %}active{% endif %}" href="{% url 'daily_list' %}">Diarios</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'streamer_register' %}active{% endif %}" href="{% url 'streamer_register' %}">Registrar Nueva Chica</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'streamer_upload_excel' %}active{% endif %}" href="{% url 'streamer_upload_excel' %}">Cagar Excel</a>
+                        </li>
+                        <li><hr class="dropdown-divider-white"></li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">Crear Retiro Dinero</a>
+                        </li>
+                        <br>    
+                        <hr class="dropdown-divider-white">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">Cerrar sesión</a>
+                        </li>
+                    </ul>
+                </div>     
+            </div>
+            {% else %}
+                <span class="navbar-text">
+                    Bienvenid@s a nuestra Agencia
+                </span>
+            {% endif %}
+
+        </div>
+    </nav>
+
+</header>

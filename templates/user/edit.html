@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Editar Usuaria/o - {{user.username}} | {% endblock %}
+{% block content %}
+<div class="d-flex justify-content-center">
+    <div class="col-md-4">
+        {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == "success" %}
+            <div class="alert alert-success text-normal">{{ message }}</div>
+            {% elif message.tags == "warning" %}
+            <div class="alert alert-warning text-normal">{{ message }}</div>
+            {% elif message.tags == "error" %}
+            <div class="alert alert-danger text-normal">{{ message }}</div>
+            {% endif %}
+        {% endfor %}
+        {% endif %}
+        <div class="card shadow mt-5">
+            <div class="card-header text-center">
+                <h4>✨ Editar de Usuaria/o</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary w-100"><i class="fa-solid fa-save"></i> Guardar Cambios</button>
+                </form>
+            </div>
+        </div>
+        <p class="text-center mt-3">
+            🔐 ¿Ya tienes cuenta? <a href="{% url 'login' %}" class="a-normal">👉 Inicia sesión aquí</a>
+        </p>
+        <div class="card shadow mt-5">
+            <div class="card-body d-flex justify-content-center">
+                <!-- Button modal - Proteccion de Datos -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#proData">🔒 Protección de tus datos</button>
+            </div>
+        </div>  
+    </div>
+</div>
+
+
+{% endblock %}

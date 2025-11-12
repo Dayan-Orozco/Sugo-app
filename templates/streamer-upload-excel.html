@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Subir Excel Streamer{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-center">
+    <div class="card shadow p-3 col-8">
+        <div class="card-header bg-dark text-white">
+            <h4 class="mb-0 text-center py-2">Subir Excel de Streamers</h4>
+        </div>
+        <form method="post" enctype="multipart/form-data">
+            <div class="card-body">
+                {% if messages %}
+                <div class="alert alert-success">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+                </div>
+                {% endif %}
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="excel_file" class="form-label">Selecciona un archivo Excel (.xlsx)</label>
+                        <p>Recuerda que tenga esta Estructura<br>id | name | real_name | join_date | telegram_number | whatsapp_number | country | charm_level | vip_level</p>
+                        <input type="file" class="form-control" name="excel_file" id="excel_file" required>
+                    </div>       
+            </div>        
+            <div class="card-footer">
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary mx-1"><i class="fa-solid fa-floppy-disk"></i> Guardar Streamers</button>
+                    <a href="{% url 'streamer_list' %}" class="btn btn-warning mx-1"><i class="fa-solid fa-arrow-left"></i> Regresar</a>
+                </div>
+            </div>
+        </form>  
+    </div>
+</div>
+{% endblock %}

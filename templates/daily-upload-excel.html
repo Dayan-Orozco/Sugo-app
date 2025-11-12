@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Subir Registro Diario de Streamers{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-center">
+    <div class="card shadow p-3 col-8">
+        <div class="card-header bg-dark text-white">
+            <h4 class="mb-0 text-center py-2">Subir Registro Diario de Streamers</h4>
+        </div>
+        <form method="post" enctype="multipart/form-data">
+            <div class="card-body">
+                {% if messages %}
+                <div class="alert alert-success">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+                </div>
+                {% endif %}
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="data_file" class="form-label">Selecciona un archivo Excel (.xlsx) o (.csv)</label>
+                        <p>Recuerda que tenga esta Estructura <br>date, streamer_name, streamer_id, total_diamonds, diamonds_chat, diamonds_gifts, diamonds_video</p>
+                        <input type="file" class="form-control" name="data_file" id="data_file" required>
+                    </div>       
+            </div>        
+            <div class="card-footer">
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary mx-1"><i class="fa-solid fa-floppy-disk"></i> Guardar Registros</button>
+                    <a href="{% url 'daily_list' %}" class="btn btn-warning mx-1"><i class="fa-solid fa-arrow-left"></i> Regresar</a>
+                </div>
+            </div>
+        </form>  
+    </div>
+</div>
+{% endblock %}

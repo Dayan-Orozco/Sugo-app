@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar {{ object }}{% endblock %}
+
+{% block content %}
+<div class="card shadow">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Eliminar {{ object }}</h4>
+    </div>
+    <div class="card-body">
+        <h2 class="mb-4 text-danger">¿Estás seguro que deseas eliminar {{ object }}?</h2>
+
+        <div class="alert alert-warning">
+            <strong>{{ object }}</strong>
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <a href="{{ cancel_url }}" class="btn btn-secondary">Cancelar</a>
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

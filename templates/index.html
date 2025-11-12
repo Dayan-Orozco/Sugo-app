@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="container text-center mt-4">
+    <h2 class="mb-3">
+        🎉 ¡Bienvenid@ {{ request.user.first_name|title }}! 🎉
+    </h2>
+    <p class="lead">
+        Nos alegra tenerte en <strong>The Crazy Agency</strong>. 
+        Este es tu espacio para disfrutar, crecer y compartir como parte de nuestra familia de <strong>Streamers</strong>.
+    </p>
+    <div class="alert alert-info text-start mt-4 shadow-sm text-normal">
+        <strong>ℹ Importante:</strong> Aquí puedes asociar tus cuentas (por ejemplo, tu cuenta de <strong>Sugo</strong>) 
+        ingresando tu <em>ID de streamer</em> para que puedas consultar tus estadísticas y saber cuánto estás generando.  
+        También encontrarás accesos directos a cursos, materiales y documentaciones útiles para tu crecimiento.
+    </div>
+
+    <div class="row mt-5">
+        <!-- Botón Cursos y Aprendizajes -->
+        <div class="col-md-4 col-6 mb-4">
+            <div class="card text-center p-3">
+                <img src="{% static 'img/foto-curso.jpg' %}" alt="Cursos y Aprendizajes" class="img-fluid" style="border-radius: 20px; box-shadow: 5px 5px 20px black;">
+                <h5 class="mt-2">Cursos y Aprendizajes</h5>
+                <a href="{% url 'course_list' %}" class="btn btn-primary">Acceder</a>  
+            </div> 
+        </div>
+        <!-- Botón Documentaciones -->
+        <div class="col-md-4 col-6 mb-4">
+            <div class="card text-center p-3">
+                <img src="{% static 'img/foto-doc.jpg' %}" alt="Documentaciones" class="img-fluid" style="border-radius: 20px; box-shadow: 5px 5px 20px black;">
+                <h5 class="mt-2">Documentaciones</h5>
+                <a href="#" class="btn btn-primary">Acceder</a>  
+            </div>
+        </div>
+        {% for p in plataformas %}
+        <div class="col-md-4 col-6 mb-4">
+            <div class="card text-center p-3">
+                <img src="{% static p.imagen %}" class="img-fluid" style="border-radius: 20px; box-shadow: 5px 5px 20px black;" alt="{{ p.nombre }}">
+                <h5 class="mt-2">{{ p.nombre|capfirst }}</h5>
+
+                {% if p.estado == "asociada" %}
+                    <a href="{% url p.url %}" class="btn btn-success">
+                        Gestionar {{ p.nombre|capfirst }}
+                    </a>
+                {% else %}
+                    <a href="{% url p.url %}" class="btn btn-warning">
+                        Asociar {{ p.nombre|capfirst }}
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}       
+
+
+
+    </div>
+</div>
+
+{% endblock %}

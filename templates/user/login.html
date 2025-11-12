@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Iniciar Sesión{% endblock %}
+{% block content %}
+
+<div class="d-flex justify-content-center">
+    <div class="col-md-4">
+        {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == "success" %}
+            <div class="alert alert-success text-normal">{{ message }}</div>
+            {% elif message.tags == "warning" %}
+            <div class="alert alert-warning text-normal">{{ message }}</div>
+            {% elif message.tags == "error" %}
+            <div class="alert alert-danger text-normal">{{ message }}</div>
+            {% endif %}
+        {% endfor %}
+        {% endif %}
+        <div class="card shadow mt-5">
+            <div class="card-header text-center">
+                <h4>🔐 Iniciar Sesión</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        {{ form.country.label_tag }}
+                        {{ form.country }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.document.label_tag }}
+                        {{ form.document }}
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 mb-2"><i class="fa-solid fa-door-open"></i> Entrar</button>
+                </form>
+            </div>
+        </div>
+        <p class="text-center mt-3">
+            🙋‍♀️ ¿Eres nueva? <a href="{% url 'register' %}" class="a-normal">👉 Registrarme</a>
+        </p>
+        <div class="card shadow mt-5">
+            <div class="card-body d-flex justify-content-center">
+                <!-- Button modal - Proteccion de Datos -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#proData">🔒 Protección de tus datos</button>
+            </div>
+        </div>  
+
+        {% if token %}
+        <div class="alert alert-success mt-3">
+            <strong>Token generado:</strong> {{ token }}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

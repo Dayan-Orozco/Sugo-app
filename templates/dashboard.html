@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Dasboard{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+<div class="col-md-4">
+    <div class="card shadow">
+        <div class="card-header text-center">
+            <h4>Dasboard</h4>
+            <h6>Elige aca la app a administrar</h6>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.country.label_tag }}
+                    {{ form.country }}
+                </div>
+                <div class="mb-3">
+                    {{ form.document.label_tag }}
+                    {{ form.document }}
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Entrar</button>
+            </form>
+        </div>
+    </div>
+
+    {% if token %}
+    <div class="alert alert-success mt-3">
+        <strong>Token generado:</strong> {{ token }}
+    </div>
+    {% endif %}
+</div>
+</div>
+{% endblock %}
