@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-3h35mn1$br1wrkq!f6##+u(6vhuat(pc_yz50v8qy-bast&v3#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['thecrazyagency.pythonanywhere.com']
 
 
@@ -87,24 +87,22 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-if DEBUG is False:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db/db.sqlite3',
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db/db.sqlite3',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'sugo_db',
-            'USER': 'sugo_user',
-            'PASSWORD': 'sugo_pass',
-            'HOST': 'db',  # este es el nombre del servicio de postgres en el docker-compose
-            'PORT': '5432',
-        }
-    }
+}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'sugo_db',
+#         'USER': 'sugo_user',
+#         'PASSWORD': 'sugo_pass',
+#         'HOST': 'db',  # este es el nombre del servicio de postgres en el docker-compose
+#         'PORT': '5432',
+#     }
+# }
 
 
 # Password validation
