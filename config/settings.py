@@ -143,9 +143,13 @@ USE_TZ = True
 # Archivos estáticos (CSS, JS, imágenes)
 STATIC_URL = '/static/'
 
+# Usar la misma carpeta 'static' tanto en desarrollo como en producción
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+
+# Aquí indicamos que collectstatic también copie en 'static'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
