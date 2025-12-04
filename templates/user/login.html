@@ -23,14 +23,7 @@
             <div class="card-body">
                 <form method="post">
                     {% csrf_token %}
-                    <div class="mb-3">
-                        {{ form.country.label_tag }}
-                        {{ form.country }}
-                    </div>
-                    <div class="mb-3">
-                        {{ form.document.label_tag }}
-                        {{ form.document }}
-                    </div>
+                    {{ form.as_p }}
                     <button type="submit" class="btn btn-primary w-100 mb-2"><i class="fa-solid fa-door-open"></i> Entrar</button>
                 </form>
             </div>

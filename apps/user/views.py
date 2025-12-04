@@ -1,9 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from django.contrib.auth import authenticate, login, logout as auth_logout
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from rest_framework.authtoken.models import Token
 from .forms import *
-from django.contrib.auth import login as auth_login, authenticate
 from .models import *
 from django.db.models import Q, Sum
 from django.core.paginator import Paginator
@@ -36,9 +35,11 @@ def login(request):
         form = LoginForm(request.POST)
         if form.is_valid():
             country = form.cleaned_data['country']
-            document = form.cleaned_data['document']
+            phone = form.cleaned_data['phone']
+            password  = form.cleaned_data['password']
+            print("Datos", password, phone)
 
-            user = authenticate(request, country=country, document=document)
+            user = authenticate(request, country=country, phone=phone, password=password)
             if user:
                 if not user.is_active:
                     messages.warning(request, "Espera la activación de tu usuario por el Jefe")
@@ -62,12 +63,14 @@ def register(request):
     
     if request.method == "POST":
         form = UserRegisterForm(request.POST)
-        if form.is_valid():           
+        if form.is_valid():         
             document = form.cleaned_data.get("document")
-            email = form.cleaned_data.get("email")
             first_name = form.cleaned_data.get("first_name")
             last_name = form.cleaned_data.get("last_name")
-            country = form.cleaned_data.get("country")
+            country = form.cleaned_data.get("country")           
+            phone = form.cleaned_data.get("phone")
+            password = form.cleaned_data.get("password")
+
             # Validaciones de campos obligatorios
             if not first_name:
                 form.add_error("first_name", "Queremos saber tu nombre para darte la bienvenida 😊")
@@ -77,12 +80,17 @@ def register(request):
                 form.add_error("document", "Por favor ingresa tu documento para continuar.")
             if not country:
                 form.add_error("country", "Selecciona tu país para asociarte correctamente.")
-            # Validación: documento ya registrado
-            if User.objects.filter(document=document).exists():
-                messages.error(request, "Este documento ya está registrado. Si ya tienes cuenta, inicia sesión.")
-            # Validación: correo ya registrado
-            elif email and User.objects.filter(email=email).exists():
-                messages.error(request, "Este correo ya está registrado. Intenta recuperar tu acceso o usa otro.")
+            if not phone:
+                form.add_error("phone", "El teléfono es obligatorio para tu acceso.")
+            if not password:
+                form.add_error("password", "Debes definir tu PIN de acceso.")
+            
+            # Validación: documento ya registrado en el mismo país
+            if User.objects.filter(country=country, document=document).exists():
+                messages.error(request, "Este documento ya está registrado en tu país. Si ya tienes cuenta, inicia sesión.")
+            # Validación: teléfono ya registrado
+            elif User.objects.filter(phone=phone).exists():
+                messages.error(request, "Este teléfono ya está registrado. Si ya tienes cuenta, inicia sesión.")
             else:
                 user = form.save(commit=False)
                 # Generar username automáticamente
@@ -93,7 +101,7 @@ def register(request):
                     username = f"{base_username}{counter}"
                     counter += 1
                 user.username = username
-
+                user.set_password(password) 
                 user.is_active = False  # No activo hasta que admin lo habilite
                 user.save()
                 messages.success(request, "🎉 Tu cuenta fue creada exitosamente. Espera aprobación para iniciar sesión.")
