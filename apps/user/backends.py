@@ -11,7 +11,6 @@ class LoginUser(BaseBackend):
             # Validar el PIN encriptado
             if user.password and check_password(password, user.password):
                 return user
-            else:
         except User.DoesNotExist:
             return None
         return None
