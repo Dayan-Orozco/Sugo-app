@@ -7,10 +7,10 @@ class CustomUserAdmin(BaseUserAdmin):
     model = User
 
     # Campos visibles en el listado de usuarios
-    list_display = ("username", "email", "is_active", "telegram_number", "country", "get_groups")
+    list_display = ("username", "phone", "is_active", "telegram_number", "country", "get_groups")
 
     # Campos que puedes buscar
-    search_fields = ("username", "email", "telegram_number", )
+    search_fields = ("username", "phone", "telegram_number", )
 
     # Campos para orden
     ordering = ("username", "country",)
@@ -21,14 +21,14 @@ class CustomUserAdmin(BaseUserAdmin):
     # Campos adicionales en el formulario de edición
     fieldsets = BaseUserAdmin.fieldsets + (
         ("Información adicional", {
-            "fields": ("country", "document", "telegram_number"),
+            "fields": ("country", "document", "phone", "telegram_number"),
         }),
     )
 
     # Campos adicionales en el formulario de creación
     add_fieldsets = BaseUserAdmin.add_fieldsets + (
         ("Información adicional", {
-            "fields": ("country", "document", "telegram_number"),
+            "fields": ("country", "document", "phone", "telegram_number"),
         }),
     )
 

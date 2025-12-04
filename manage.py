@@ -35,7 +35,7 @@ def create_data():
     country = input("Ingrese el código del país (col, ven, mex, bol, per, arg, ecu, crc): ").strip().lower()
     document = input("Ingrese el número de documento: ").strip()
     username = input("Ingrese su usuario: ").strip()
-    email = input("Ingrese su correo: ").strip()
+    phone = input("Ingrese su telefono: ").strip()
     password = input("Ingrese una contraseña: ").strip()
 
     print("Creando Grupos")
@@ -45,7 +45,7 @@ def create_data():
     Group.objects.get_or_create(name="Streamers")
     print("Grupos creados")
     # Crear el usuario
-    usuario = User.objects.create_user(username=username, password=password, email=email, is_staff=True, is_superuser=True, country=country, document=document)
+    usuario = User.objects.create_user(username=username, password=password, phone=phone, is_staff=True, is_superuser=True, country=country, document=document)
     print("Usuario Creado")
     # Asignar grupo al usuario
     usuario.groups.add(grupo)
