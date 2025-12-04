@@ -232,3 +232,24 @@ def edit_user(request, username):# Editar Usuarias
     else:
         form = UserRegisterForm(instance=user)
     return render(request, 'user/edit.html', {'form': form})
+
+# Recuperar Contraseña
+def reset_pin(request):
+    if request.method == "POST":
+        form = ResetPinForm(request.POST)
+        if form.is_valid():
+            country = form.cleaned_data['country']
+            document = form.cleaned_data['document']
+            new_pin = form.cleaned_data['new_pin']
+            try:
+                user = User.objects.get(country=country, document=document)
+                user.set_password(new_pin)             
+                user.save()                
+                messages.success(request, "✅ PIN actualizado correctamente.")
+                return redirect("login")  # O página de éxito
+            except User.DoesNotExist:
+                messages.error(request, "❌ Usuario o documento incorrecto.")
+    else:
+        form = ResetPinForm()
+
+    return render(request, "user/reset_pin.html", {"form": form})
