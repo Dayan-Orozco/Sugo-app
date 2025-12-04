@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Iniciar Sesión{% endblock %}
+{% block title %}Restablecer PIN{% endblock %}
 {% block content %}
 
 <div class="d-flex justify-content-center">
@@ -18,16 +18,16 @@
         {% endif %}
         <div class="card shadow mt-5">
             <div class="card-header text-center">
-                <h4>🔐 Iniciar Sesión</h4>
+                <h4>🔐 Restablecer PIN</h4>
             </div>
             <div class="card-body">
                 <form method="post">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <button type="submit" class="btn btn-primary w-100 mb-2"><i class="fa-solid fa-door-open"></i> Entrar</button>
+                    <button type="submit" class="btn btn-primary w-100 mb-2"><i class="fa-solid fa-square-check"></i> Validar</button>
                 </form>
             <p class="text-center mt-3">
-                <a href="{% url 'reset-password' %}">¿Olvidaste Tu PIN?</a>
+                <a href="{% url 'login' %}">Volver</a>
             </p>
             </div>
         </div>

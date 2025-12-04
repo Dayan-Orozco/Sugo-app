@@ -74,3 +74,33 @@ class UserRegisterForm(forms.ModelForm):
                 "placeholder": "XXXxxxxXXX o @thecrazyagency"
             }),
         }
+
+class ResetPinForm(forms.Form):
+    country = forms.ChoiceField(
+        choices=User.COUNTRY_CHOICES,
+        label="🌍 País",
+        widget=forms.Select(attrs={'class': 'form-control'})
+    )
+    document = forms.CharField(
+        label="🪪 Documento / Identificación",
+        max_length=20,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'pattern': '[0-9]+',
+            'inputmode': 'numeric',
+        })
+    )
+    new_pin = forms.CharField(
+        label="🔑 Nuevo PIN",
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'maxlength': '4',
+            'minlength': '4',
+            'pattern': '[0-9]{4}',
+            'inputmode': 'numeric',
+        }),
+        validators=[
+            MinLengthValidator(4, "El PIN debe tener mínimo 4 dígitos"),
+            MaxLengthValidator(4, "El PIN debe tener máximo 4 dígitos"),
+        ]
+    )
